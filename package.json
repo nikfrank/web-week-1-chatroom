@@ -2,6 +2,7 @@
   "name": "chatroom",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "express": "^4.17.1",
     "pg": "^7.11.0",
