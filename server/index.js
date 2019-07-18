@@ -38,6 +38,14 @@ const Message = connection.define('message', {
 
 // routes
 
+
+app.use( express.json() );
+
+connection.authenticate()
+  .then(()=> console.log('success'))
+  .catch((err)=> console.error(err));
+
+
 app.get('/hydrate', (req, res)=>{
   Message.sync({ force: true })
     .then(()=> res.json({ message: 'success' }))
@@ -46,5 +54,16 @@ app.get('/hydrate', (req, res)=>{
 
 
 app.get('/message', (req, res)=>{
-  
+  Message.findAll()
+    .then(messages => res.json(messages))
+    .catch(err=> console.error(err)|| res.status(500).json({ err }))
 });
+
+app.get('/message/:room', (req, res)=>{
+  Message.findAll({
+    where: { room: req.params.room },
+  })
+});
+
+
+app.listen(port, ()=> console.log('listening on ' + port));
