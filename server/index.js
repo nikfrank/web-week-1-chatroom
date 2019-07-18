@@ -62,8 +62,14 @@ app.get('/message', (req, res)=>{
 app.get('/message/:room', (req, res)=>{
   Message.findAll({
     where: { room: req.params.room },
-  })
+  }).then(messages => res.json(messages))
+    .catch(err => console.error(err)|| res.status(500).json({ err }))
 });
 
+app.post('/message', (req, res)=>{
+  Message.create(req.body)
+    .then(response=> res.status(201).json({ created: response.dataValues }))
+    .catch(err => console.error(err)|| res.status(500).json({ err }))
+});
 
 app.listen(port, ()=> console.log('listening on ' + port));
